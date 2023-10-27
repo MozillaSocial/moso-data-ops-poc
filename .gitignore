@@ -1,0 +1,55 @@
+# prefect artifacts
+*-deployment.yaml
+*-deployment.yml
+
+# python artifacts
+__pycache__/
+*__pycache__
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.pytest_cache
+dist
+.coverage
+.coverage*
+
+# Type checking artifacts
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# IPython
+profile_default/
+ipython_config.py
+*.ipynb_checkpoints/*
+
+# Environments
+.python-version
+.env
+.venv
+env/
+venv/
+
+# MacOS
+.DS_Store
+
+# Dask
+dask-worker-space/
+
+# Editors
+.idea/
+.vscode/
+.run/
+
+# VCS
+.git/
+.hg/
+
+# docs
+site
+
+# ruff
+.ruff_cache
+
