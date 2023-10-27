@@ -1,0 +1,33 @@
+# Welcome to your prefect.yaml file! You can use this file for storing and managing
+# configuration for deploying your flows. We recommend committing this file to source
+# control along with your flow code.
+
+# Generic metadata about this project
+name: data-flows
+prefect-version: 2.13.7
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+- prefect.deployments.steps.run_shell_script:
+    id: pull-subfolder
+    script: msdo pull-subproject {{ $MOZILLA_PREFECT_GIT_REPO }} {{ $MOZILLA_PREFECT_GIT_BRANCH
+      }} {{ $MOZILLA_PREFECT_GIT_SUBFOLDER }} /opt/prefect
+    stream_output: false
+- prefect.deployments.steps.set_working_directory:
+    directory: /opt/prefect/data-flows
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: base_{{ $MOZILLA_PREFECT_DEPLOYMENT_TYPE }}
+  version: 0.0.1
+  tags: []
+  description: Base deployment template for gcp_example
+  schedule: {}
+  flow_name: gcp-example/main
+  entrypoint: src/gcp_example.py:main.py
+  parameters: {}
+  work_pool:
+    name: docker-local
+    work_queue_name: default
+    job_variables: 
+      image: prefect-v2-local

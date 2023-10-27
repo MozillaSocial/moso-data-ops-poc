@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "common-utils"
+version = "0.1.3"
+description = ""
+authors = ["Braun <breyes@mozilla.com>"]
+readme = "README.md"
+packages = [{include = "common", from = 'src'}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["rich"], version = "^0.9.0"}
+rich = "^13.6.0"
+
+[tool.poetry.scripts]
+msdo = 'common.deployment:main'
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
