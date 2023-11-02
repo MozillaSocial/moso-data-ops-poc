@@ -7,11 +7,18 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+pydantic = "<2"
+sqlglot = "^19.0.2"
+prefect-dask = "^0.2.5"
+duckdb = "^0.9.1"
+common-utils = {path = "../common-utils", develop = true}
+prefect-snowflake = "^0.27.0"
 
 
 [tool.poetry.group.dev.dependencies]
-prefect-docker = "^0.3.11"
 prefect = "2.14.1"
+prefect-docker = "^0.4.0"
+bokeh = "^3.3.0"
 
 [build-system]
 requires = ["poetry-core"]

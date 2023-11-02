@@ -1,0 +1,11 @@
+set shell := ["/bin/bash", "-c"]
+
+pull-gh-subdir:
+    mkdir -p /opt/prefect && \
+    pushd /opt/prefect && \
+    git init && \
+    git remote add -f origin ${MOZILLA_PREFECT_GIT_REPO} && \
+    git config core.sparseCheckout true && \
+    echo "${MOZILLA_PREFECT_GIT_SUBFOLDER}" >> .git/info/sparse-checkout && \
+    git pull origin ${MOZILLA_PREFECT_GIT_BRANCH}
+    popd

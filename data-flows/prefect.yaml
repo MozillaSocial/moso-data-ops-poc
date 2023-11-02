@@ -4,30 +4,37 @@
 
 # Generic metadata about this project
 name: data-flows
-prefect-version: 2.13.7
+prefect-version: "{{ $MOZILLA_PREFECT_VERSION }}"
 
 # pull section allows you to provide instructions for cloning this project in remote locations
 pull:
-- prefect.deployments.steps.run_shell_script:
-    id: pull-subfolder
-    script: msdo pull-subproject {{ $MOZILLA_PREFECT_GIT_REPO }} {{ $MOZILLA_PREFECT_GIT_BRANCH
-      }} {{ $MOZILLA_PREFECT_GIT_SUBFOLDER }} /opt/prefect
-    stream_output: false
-- prefect.deployments.steps.set_working_directory:
-    directory: /opt/prefect/data-flows
+  - prefect.deployments.steps.run_shell_script:
+      id: pull-subfolder
+      script: just pull-gh-subdir
+      stream_output: false
+  - prefect.deployments.steps.set_working_directory:
+      directory: /opt/prefect/data-flows
+
+definitions:
+  work_pools:
+      cloud_run_work_pool_dev: &cloud_run_work_pool_dev
+          name: mozilla-cloud-run-dev
+          work_queue_name: default
+          job_variables:
+              image: "{{ $MOZILLA_PREFECT_IMAGE }}"
+              env: 
+                MOZILLA_PREFECT_DEPLOYMENT_TYPE: '{{ $MOZILLA_PREFECT_DEPLOYMENT_TYPE }}'
+                MOZILLA_PREFECT_GIT_SUBFOLDER: '{{ $MOZILLA_PREFECT_GIT_SUBFOLDER }}'
+                MOZILLA_PREFECT_GIT_REPO: '{{ $MOZILLA_PREFECT_GIT_REPO }}'
+                MOZILLA_PREFECT_GIT_BRANCH: '{{ $MOZILLA_PREFECT_GIT_BRANCH }}'
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-- name: base_{{ $MOZILLA_PREFECT_DEPLOYMENT_TYPE }}
-  version: 0.0.1
-  tags: []
-  description: Base deployment template for gcp_example
-  schedule: {}
-  flow_name: gcp-example/main
-  entrypoint: src/gcp_example.py:main.py
-  parameters: {}
-  work_pool:
-    name: docker-local
-    work_queue_name: default
-    job_variables: 
-      image: prefect-v2-local
+  - name: base_{{ $MOZILLA_PREFECT_DEPLOYMENT_TYPE }}
+    version: 0.0.1
+    tags: []
+    description: demo flow
+    schedule:
+    entrypoint: src/query_analysis.py:main
+    parameters: {}
+    work_pool: *cloud_run_work_pool

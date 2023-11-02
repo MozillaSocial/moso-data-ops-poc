@@ -53,3 +53,7 @@ site
 # ruff
 .ruff_cache
 
+# local
+output.csv
+
+
